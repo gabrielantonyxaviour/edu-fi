@@ -32,7 +32,7 @@ export default function From({
   const { chainId } = useAccount();
   const [chevron, setChevron] = useState(true);
   return (
-    <Card className="w-full pt-2  border-none bg-zinc-950 ">
+    <Card className="w-full pt-2  border-none ">
       <CardTitle>
         <p className="text-xs text-muted-foreground font-semibold px-2">
           You pay
@@ -50,8 +50,9 @@ export default function From({
               onClick={() => {
                 setChevron(!chevron);
               }}
+              className="data-[state=open]:bg-transparent focus:bg-transparent"
             >
-              <div className="flex space-x-2 items-center ">
+              <div className=" flex space-x-2 items-center ">
                 <Image
                   src={supportedcoins[fromToken].image}
                   width={20}

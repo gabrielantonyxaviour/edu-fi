@@ -16,7 +16,7 @@ export function TokenBalance({
     console.log(usdBalances);
   }, []);
   return (
-    <ScrollArea className="h-[22rem] mx-0 px-0 w-full">
+    <ScrollArea className="h-[15rem] mx-0 px-0 w-full">
       {Object.entries(usdBalances)
         .sort(
           ([, valueA], [, valueB]) => parseFloat(valueB) - parseFloat(valueA)

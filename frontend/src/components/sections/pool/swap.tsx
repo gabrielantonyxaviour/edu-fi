@@ -47,7 +47,7 @@ export default function Swap({
       </div>
     );
   return (
-    <Card className="border-none w-[500px] ">
+    <Card className="border-none w-[490px]">
       <CardContent className="relative ">
         {/* <div className="absolute bg-white w-[10px] h-[10px] left-[50%] top-[50%]"></div> */}
         <From

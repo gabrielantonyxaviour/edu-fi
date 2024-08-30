@@ -171,7 +171,7 @@ export default function PoolPage() {
     );
   return (
     <div className="flex justify-center items-center h-full">
-      <Card className="border-none w-[500px] ">
+      <Card className="border w-[500px] pt-2">
         <CardTitle>
           <div className="flex justify-between items-center px-3 py-1">
             <div className="flex ">

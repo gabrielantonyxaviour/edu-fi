@@ -44,7 +44,7 @@ export default function Order({
       </div>
     );
   return (
-    <Card className="border-none w-[500px] ">
+    <Card className="border-none w-[490px] ">
       <CardContent className="">
         <From
           toToken={toToken}

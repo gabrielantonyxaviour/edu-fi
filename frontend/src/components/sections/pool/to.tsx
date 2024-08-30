@@ -31,7 +31,7 @@ export default function To({
   const { chainId } = useAccount();
   const [toChevron, setToChevron] = useState(true);
   return (
-    <Card className="w-full pt-4 border-muted-background bg-zinc-950">
+    <Card className="w-full pt-4 border-none bg-secondary">
       <CardTitle className="">
         <p className="text-xs text-muted-foreground font-semibold px-2">
           You receive
@@ -42,7 +42,7 @@ export default function To({
           onClick={() => {
             setToChevron(!toChevron);
           }}
-          className="border-none"
+          className="border-none bg-transparent"
         >
           <MenubarMenu>
             <MenubarTrigger
@@ -151,7 +151,7 @@ export default function To({
           </div>
         ) : (
           <Input
-            className="font-semibold border-none w-[50%] text-right hover:border-none"
+            className="font-semibold border-none w-[50%] text-right hover:border-none bg-transparent"
             disabled
             value={toAmount}
           />
