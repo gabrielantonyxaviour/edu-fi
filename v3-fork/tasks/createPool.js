@@ -46,7 +46,7 @@ task("create-pool", "Create a pool").setAction(async (taskArgs) => {
   const fee = 3000;
 
   // Calculate sqrtPriceX96
-  const sqrtPriceX96 = calculateY(tokenAPriceInTokenB, 18, 6);
+  const sqrtPriceX96 = "3409290029545542707626329"; // calculateY(tokenAPriceInTokenB, 18, 6);
   console.log("sqrtPriceX96", sqrtPriceX96.toString());
   const core = new ethers.Contract(
     poolFactory,
