@@ -11,7 +11,7 @@ import { supportedchains, supportedcoins, poolAbi } from "@/lib/constants";
 import Image from "next/image";
 import { roundUpToFiveDecimals } from "@/lib/utils";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
@@ -43,7 +43,40 @@ export default function Transaction({
   const { chainId, address } = useAccount();
   const { writeContractAsync } = useWriteContract();
   const [txStarted, setTxStarted] = useState(0);
+  const [pool, setPool] = useState(zeroAddress);
+  const [fromIsTokenA, setFromIsTokenA] = useState(true);
+  useEffect(() => {
+    let tempFromToken, tempToToken;
+    if (chainId == educhainTestnet.id) {
+      tempFromToken = fromToken.slice(0, 3);
+      tempToToken = toToken.slice(0, 3);
+    } else {
+      tempFromToken = fromToken;
+      tempToToken = toToken;
+    }
+    let tempPool;
+    if (
+      supportedchains[chainId || educhainTestnet.id].pools[
+        ((tempFromToken as string) + tempToToken) as string
+      ] == undefined
+    ) {
+      setFromIsTokenA(true);
+      tempPool =
+        supportedchains[chainId || educhainTestnet.id].pools[
+          ((tempToToken as string) + tempFromToken) as string
+        ];
+    } else {
+      setFromIsTokenA(false);
+      tempPool =
+        supportedchains[chainId || educhainTestnet.id].pools[
+          ((tempFromToken as string) + tempToToken) as string
+        ];
+    }
 
+    console.log("tempPool");
+    console.log(tempPool);
+    setPool(tempPool);
+  }, [fromToken, toToken]);
   useEffect(() => {
     if (approveTx != "") {
       toast({
@@ -139,76 +172,80 @@ export default function Transaction({
           </div>
         </div>
         <DialogFooter>
-          {fromToken != "nativeEth" && fromToken != "nativeBnb" && (
-            <Button
-              disabled={
-                completedTxs > 0 || (txStarted == 1 && completedTxs == 0)
-              }
-              onClick={async () => {
-                setTxStarted(1);
-                console.log("Approving");
-                console.log(
-                  supportedchains[chainId || educhainTestnet.id].tokens[
-                    fromToken
-                  ]
-                );
-                try {
-                  const tx = await writeContractAsync({
-                    abi: erc20Abi,
-                    address:
-                      supportedchains[chainId || educhainTestnet.id].tokens[
-                        fromToken
-                      ],
-                    functionName: "approve",
-                    args: [
-                      supportedchains[chainId || educhainTestnet.id].pools
-                        .usdcweth,
-                      BigInt(parseEther(fromAmount)) /
-                        (fromToken == "usdc"
-                          ? BigInt("1000000000000")
-                          : BigInt("1")),
+          <Button
+            disabled={completedTxs > 0 || (txStarted == 1 && completedTxs == 0)}
+            onClick={async () => {
+              setTxStarted(1);
+              console.log("Approving");
+              console.log(
+                supportedchains[chainId || educhainTestnet.id].tokens[fromToken]
+              );
+              try {
+                const tx = await writeContractAsync({
+                  abi: erc20Abi,
+                  address:
+                    supportedchains[chainId || educhainTestnet.id].tokens[
+                      fromToken
                     ],
-                  });
-                  const txReceipt = await waitForTransactionReceipt(config, {
-                    hash: tx,
-                  });
-                  setApproveTx(tx);
-                  setCompletedTxs(completedTxs + 1);
-                } catch (e) {
-                  console.log(e);
-                  setTxStarted(0);
-                }
-              }}
-            >
-              {txStarted == 1 && completedTxs == 0 ? (
-                <div className="black-spinner"></div>
-              ) : (
-                `Approve ${supportedcoins[fromToken].symbol}`
-              )}
-            </Button>
-          )}
+                  functionName: "approve",
+                  args: [
+                    pool,
+                    BigInt(parseEther(fromAmount)) /
+                      (fromToken == "usdc"
+                        ? BigInt("1000000000000")
+                        : BigInt("1")),
+                  ],
+                });
+                const txReceipt = await waitForTransactionReceipt(config, {
+                  hash: tx,
+                });
+                setApproveTx(tx);
+                setCompletedTxs(completedTxs + 1);
+              } catch (e) {
+                console.log(e);
+                setTxStarted(0);
+              }
+            }}
+          >
+            {txStarted == 1 && completedTxs == 0 ? (
+              <div className="black-spinner"></div>
+            ) : (
+              `Approve ${supportedcoins[fromToken].symbol}`
+            )}
+          </Button>
           <Button
             disabled={
-              (completedTxs == 0 || (txStarted == 2 && completedTxs == 1)) &&
-              fromToken != "nativeEth" &&
-              fromToken != "nativeBnb"
+              completedTxs == 0 || (txStarted == 2 && completedTxs == 1)
             }
             onClick={async () => {
               setTxStarted(2);
-
+              console.log("Swapping");
+              console.log("ARGS");
+              const args = [
+                address,
+                fromIsTokenA,
+                fromIsTokenA
+                  ? ""
+                  : "-" +
+                    BigInt(parseEther(fromAmount)) /
+                      (fromToken == "usdc"
+                        ? BigInt("1000000000000")
+                        : BigInt("1")),
+                fromIsTokenA
+                  ? "-"
+                  : "" +
+                    BigInt(parseEther(toAmount)) /
+                      (fromToken == "usdc"
+                        ? BigInt("1000000000000")
+                        : BigInt("1")),
+              ];
+              console.log(args);
               try {
                 const tx = await writeContractAsync({
                   abi: poolAbi,
-                  address:
-                    supportedchains[(chainId || educhainTestnet.id).toString()]
-                      .pools.usdcweth,
+                  address: pool,
                   functionName: "swap",
-                  args: [
-                    address,
-                    false,
-                    BigInt(parseEther(fromAmount)),
-                    BigInt(parseEther(toAmount)),
-                  ],
+                  args,
                 });
                 setActionTx(tx);
 

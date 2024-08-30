@@ -70,7 +70,7 @@ export default function To({
               </div>
             </MenubarTrigger>
             <MenubarContent>
-              <MenubarItem
+              {/* <MenubarItem
                 disabled={fromToken == "eth" || fromToken == "edu"}
                 onClick={() => {
                   setToToken(chainId == arbitrumSepolia.id ? "eth" : "edu");
@@ -98,7 +98,7 @@ export default function To({
                     }
                   </p>
                 </div>
-              </MenubarItem>
+              </MenubarItem> */}
 
               {Object.entries(supportedcoins)
                 .slice(2, 7)

@@ -68,7 +68,7 @@ export default function From({
               </div>
             </MenubarTrigger>
             <MenubarContent>
-              <MenubarItem
+              {/* <MenubarItem
                 disabled={toToken == "eth" || toToken == "edu"}
                 onClick={() => {
                   setFromToken(chainId == arbitrumSepolia.id ? "eth" : "edu");
@@ -95,7 +95,7 @@ export default function From({
                     }
                   </p>
                 </div>
-              </MenubarItem>
+              </MenubarItem> */}
 
               {Object.entries(supportedcoins)
                 .slice(2, 7)
