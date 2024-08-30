@@ -7,22 +7,23 @@ export const COINMARKETCAP_IDS: Record<string, number> = {
   eth: 1027,
   edu: 24613,
   dai: 4943,
+  weth: 2396,
 };
 
 export const supportedcoins: Record<string, any> = {
   edu: {
-    name: "EduChain",
-    symbol: "EDU",
+    name: "Test EduChain",
+    symbol: "tEDU",
     image: "/coins/edu.png",
   },
   eth: {
-    name: "Arbitrum Etherem",
-    symbol: "ETH",
+    name: "Test Arbitrum Etherem",
+    symbol: "tETH",
     image: "/coins/arbitrum.png",
   },
   weth: {
-    name: "Wrapped Ethereum",
-    symbol: "WETH",
+    name: "Test Wrapped Ethereum",
+    symbol: "tWETH",
     image: "/coins/weth.png",
   },
   link: {
@@ -46,8 +47,8 @@ export const supportedcoins: Record<string, any> = {
     image: "/coins/dai.png",
   },
   eduweth: {
-    name: "Wrapped Ethereum",
-    symbol: "WETH",
+    name: "Test Wrapped Ethereum",
+    symbol: "tWETH",
     image: "/coins/weth.png",
   },
   edulink: {

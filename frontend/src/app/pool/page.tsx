@@ -24,6 +24,7 @@ import { config } from "@/lib/config";
 import { erc20Abi, formatEther } from "viem";
 import { roundUpToFiveDecimals } from "@/lib/utils";
 import { useEnvironmentContext } from "@/components/sections/context";
+import { arbitrumSepolia } from "viem/chains";
 interface ClassifyResponse {
   response: string;
   action: string;
@@ -35,9 +36,9 @@ export default function PoolPage() {
   const { switchChainAsync, switchChain } = useSwitchChain();
   const [selectedAction, setSelectedAction] = useState(false);
   const [fromAmount, setFromAmount] = useState("0");
-  const [fromToken, setFromToken] = useState("usdt");
+  const [fromToken, setFromToken] = useState("usdc");
   const [toLoading, setToLoading] = useState(false);
-  const [toToken, setToToken] = useState("link");
+  const [toToken, setToToken] = useState("weth");
   const [toAmount, setToAmount] = useState("0");
   const [conversionValue, setConversionValue] = useState("0");
   const [fromCoversionValue, setFromConversionValue] = useState("0");
@@ -130,18 +131,6 @@ export default function PoolPage() {
       setToAmount((parseFloat(f) * cValueWithSlippage).toString());
     }
   }, [selectedAction]);
-
-  useEffect(() => {
-    try {
-      if (chainId == 97) {
-        switchChain({ chainId: 56 });
-      }
-      setFromToken("usdt");
-      setToToken("link");
-    } catch (e) {
-      console.log(e);
-    }
-  }, [chainId]);
 
   useEffect(() => {
     if (action == "swap") {
@@ -295,8 +284,7 @@ export default function PoolPage() {
               toAmount,
               setSlippage,
               slippage,
-              fromBalance:
-                balanceObject[chainId?.toString() || "11155111"][fromToken],
+              fromBalance: balanceObject[arbitrumSepolia.id][fromToken],
               toLoading,
               triggerAction: () => {
                 setOpenTransaction(true);
