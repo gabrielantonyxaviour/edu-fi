@@ -1,6 +1,6 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import "dotenv/config";
+require("@chainlink/env-enc").config();
 import "hardhat-deploy";
 import "hardhat-deploy-ethers";
 
