@@ -22,11 +22,25 @@ export function TokenBalance({
           ([, valueA], [, valueB]) => parseFloat(valueB) - parseFloat(valueA)
         )
         .map(([key, value]) => (
-          <div key={key} className="flex items-center py-3 px-3">
-            <Avatar className="h-9 w-9">
-              <AvatarImage src={supportedcoins[key].image} alt="Avatar" />
-              <AvatarFallback>OM</AvatarFallback>
-            </Avatar>
+          <div key={key} className="flex  items-center py-3 px-3">
+            <div className="relative">
+              <Avatar className="h-9 w-9">
+                <AvatarImage src={supportedcoins[key].image} alt="Avatar" />
+                <AvatarFallback>OM</AvatarFallback>
+              </Avatar>
+              <Avatar className="h-5 w-5 absolute -bottom-2 right-0">
+                <AvatarImage
+                  src={
+                    key.slice(0, 3) == "edu"
+                      ? supportedcoins.edu.image
+                      : supportedcoins.eth.image
+                  }
+                  alt="Avatar"
+                />
+                <AvatarFallback>OM</AvatarFallback>
+              </Avatar>
+            </div>
+
             <div className="ml-4 space-y-1">
               <p className="text-sm font-medium leading-none">
                 {supportedcoins[key].name}
