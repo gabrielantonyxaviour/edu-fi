@@ -295,7 +295,7 @@ export default function Layout({ children }: LayoutProps) {
 
         <Button
           disabled={status != "connected"}
-          className="z-10 absolute bottom-10 right-10 border-2 rounded-full border-muted-foreground bg-transparent border-none hover:border-none hover:bg-transparent"
+          className="z-10 absolute  bottom-10 right-10 border-2 rounded-full border-muted-foreground bg-transparent border-none hover:border-none hover:bg-transparent"
           onClick={() => {
             setOpenAi(true);
           }}

@@ -4,7 +4,13 @@ import ConnectButton from "../ui/connect-button";
 export default function DefaultLanding() {
   return (
     <div className="flex-1 flex flex-col justify-center items-center">
-      <Image src={"/logotext.png"} height={100} width={200} alt="Logo" />
+      <Image
+        src={"/logotext.jpeg"}
+        height={100}
+        width={200}
+        alt="Logo"
+        className="mb-5"
+      />
       <p className="pb-6 font-semibold text-sm">
         Beginner friendly UniswapV3 on Educhain powered by AI
       </p>
