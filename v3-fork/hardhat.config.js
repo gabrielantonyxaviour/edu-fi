@@ -22,27 +22,34 @@ module.exports = {
   networks: {
     ...networks,
   },
-  // hardhat-deploy named account system
   namedAccounts: {
     deployer: {
-      default: 0, // Deployer will be the first private key above
+      default: 0,
     },
     assistant: {
-      default: 1, // Assistant will be the second private key above
+      default: 1,
     },
   },
   etherscan: {
     apiKey: {
       arbitrumSepolia: networks.arbitrumSepolia.verifyApiKey,
-      educhainTestnet: "TEST",
+      educhainTestnet: networks.educhainTestnet.verifyApiKey,
     },
     customChains: [
       {
         network: "educhainTestnet",
         chainId: 656476,
         urls: {
-          apiURL: "https://opencampus-codex.blockscout.com/api/v2/",
+          apiURL: "https://opencampus-codex.blockscout.com/api/",
           browserURL: "https://opencampus-codex.blockscout.com/",
+        },
+      },
+      {
+        network: "arbitrumSepolia",
+        chainId: networks.arbitrumSepolia.chainId,
+        urls: {
+          apiURL: "https://api-sepolia.arbiscan.io/api/",
+          browserURL: "https://sepolia.arbiscan.io/",
         },
       },
     ],

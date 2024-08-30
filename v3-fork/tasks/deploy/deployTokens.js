@@ -7,7 +7,7 @@ task("deploy-tokens", "Deploys the Tokens")
     false,
     types.boolean
   )
-  .setAction(async (taskArgs) => {
+  .setAction(async (taskArgs, hre) => {
     console.log("\n__Compiling Contracts__");
     await run("compile");
 
@@ -41,6 +41,7 @@ task("deploy-tokens", "Deploys the Tokens")
         console.log("\nVerifying contract...");
         await run("verify:verify", {
           address: daiContract.address,
+          contract: "contracts/tokens/DAIMock.sol:DAIMock",
           constructorArguments: [],
         });
         console.log("Contract verified");
@@ -89,6 +90,7 @@ task("deploy-tokens", "Deploys the Tokens")
         console.log("\nVerifying contract...");
         await run("verify:verify", {
           address: usdcContract.address,
+          contract: "contracts/tokens/USDCMock.sol:USDCMock",
           constructorArguments: [],
         });
         console.log("Contract verified");
@@ -136,6 +138,7 @@ task("deploy-tokens", "Deploys the Tokens")
       try {
         console.log("\nVerifying contract...");
         await run("verify:verify", {
+          contract: "contracts/tokens/WETHMock.sol:WETHMock",
           address: wethContract.address,
           constructorArguments: [],
         });
@@ -185,6 +188,7 @@ task("deploy-tokens", "Deploys the Tokens")
         console.log("\nVerifying contract...");
         await run("verify:verify", {
           address: linkContract.address,
+          contract: "contracts/tokens/LINKMock.sol:LINKMock",
           constructorArguments: [],
         });
         console.log("Contract verified");
@@ -233,6 +237,7 @@ task("deploy-tokens", "Deploys the Tokens")
         console.log("\nVerifying contract...");
         await run("verify:verify", {
           address: usdtContract.address,
+          contract: "contracts/tokens/USDTMock.sol:USDTMock",
           constructorArguments: [],
         });
         console.log("Contract verified");
