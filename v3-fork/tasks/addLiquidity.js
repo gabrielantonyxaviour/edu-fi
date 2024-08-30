@@ -4,6 +4,49 @@ const { networks } = require("../networks");
 task("add-liquidity", "Add liquidity to pool").setAction(async (taskArgs) => {
   const { ethers, deployments } = hre;
   const [signer] = await ethers.getSigners();
+  const erc20Abi = [
+    {
+      constant: false,
+      inputs: [
+        {
+          name: "user",
+          type: "address",
+        },
+        {
+          name: "amount",
+          type: "uint256",
+        },
+      ],
+      name: "mint",
+      outputs: [],
+      payable: false,
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
+      constant: false,
+      inputs: [
+        {
+          name: "spender",
+          type: "address",
+        },
+        {
+          name: "amount",
+          type: "uint256",
+        },
+      ],
+      name: "approve",
+      outputs: [
+        {
+          name: "",
+          type: "bool",
+        },
+      ],
+      payable: false,
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+  ];
   const poolAbi = [
     {
       inputs: [
@@ -151,6 +194,45 @@ task("add-liquidity", "Add liquidity to pool").setAction(async (taskArgs) => {
     {
       inputs: [
         {
+          internalType: "uint160",
+          name: "sqrtRatioX96",
+          type: "uint160",
+        },
+        {
+          internalType: "int24",
+          name: "tickLower",
+          type: "int24",
+        },
+        {
+          internalType: "int24",
+          name: "tickUpper",
+          type: "int24",
+        },
+        {
+          internalType: "uint256",
+          name: "amount0",
+          type: "uint256",
+        },
+        {
+          internalType: "uint256",
+          name: "amount1",
+          type: "uint256",
+        },
+      ],
+      name: "getLiquidityForAmounts",
+      outputs: [
+        {
+          internalType: "uint128",
+          name: "",
+          type: "uint128",
+        },
+      ],
+      stateMutability: "pure",
+      type: "function",
+    },
+    {
+      inputs: [
+        {
           internalType: "address",
           name: "owner",
           type: "address",
@@ -237,6 +319,25 @@ task("add-liquidity", "Add liquidity to pool").setAction(async (taskArgs) => {
     {
       inputs: [
         {
+          internalType: "int24",
+          name: "tick",
+          type: "int24",
+        },
+      ],
+      name: "getSqrtRatioAtTick",
+      outputs: [
+        {
+          internalType: "uint160",
+          name: "",
+          type: "uint160",
+        },
+      ],
+      stateMutability: "pure",
+      type: "function",
+    },
+    {
+      inputs: [
+        {
           internalType: "uint160",
           name: "sqrtPriceX96",
           type: "uint160",
@@ -291,14 +392,6 @@ task("add-liquidity", "Add liquidity to pool").setAction(async (taskArgs) => {
           type: "int24",
         },
         {
-          internalType: "uint128",
-          name: "amount",
-          type: "uint128",
-        },
-      ],
-      name: "mint",
-      outputs: [
-        {
           internalType: "uint256",
           name: "amount0",
           type: "uint256",
@@ -306,6 +399,19 @@ task("add-liquidity", "Add liquidity to pool").setAction(async (taskArgs) => {
         {
           internalType: "uint256",
           name: "amount1",
+          type: "uint256",
+        },
+      ],
+      name: "mint",
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+        {
+          internalType: "uint256",
+          name: "",
           type: "uint256",
         },
       ],
@@ -387,27 +493,27 @@ task("add-liquidity", "Add liquidity to pool").setAction(async (taskArgs) => {
           type: "bool",
         },
         {
-          internalType: "int256",
-          name: "amountSpecified",
-          type: "int256",
+          internalType: "uint256",
+          name: "amount0",
+          type: "uint256",
         },
         {
-          internalType: "uint160",
-          name: "sqrtPriceLimitX96",
-          type: "uint160",
+          internalType: "uint256",
+          name: "amount1",
+          type: "uint256",
         },
       ],
       name: "swap",
       outputs: [
         {
-          internalType: "int256",
-          name: "amount0",
-          type: "int256",
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
         },
         {
-          internalType: "int256",
-          name: "amount1",
-          type: "int256",
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
         },
       ],
       stateMutability: "nonpayable",
@@ -512,32 +618,74 @@ task("add-liquidity", "Add liquidity to pool").setAction(async (taskArgs) => {
     },
   ];
 
+  // Approve and Mint Tokens
+  // const tokenA = networks[network.name].weth;
+  // const tokenAContract = new ethers.Contract(tokenA, erc20Abi, signer);
+  // console.log("Minting Token A...");
+  // const mintAConfirmation = await tokenAContract.mint(
+  //   signer.address,
+  //   BigNumber.from(10).pow(36).toString()
+  // );
+  // await mintAConfirmation.wait();
+  // console.log("Token A minted");
+  // console.log("Approving Token A...");
+  // const tokenAApproval = await tokenAContract.approve(
+  //   networks[network.name].wethUsdcPool,
+  //   ethers.constants.MaxUint256
+  // );
+  // await tokenAApproval.wait();
+  // console.log("tokenA approved");
+
+  // console.log("Minting Token B...");
+  // const tokenB = networks[network.name].usdc;
+  // const tokenBContract = new ethers.Contract(tokenB, erc20Abi, signer);
+  // const mintBConfirmation = await tokenBContract.mint(
+  //   signer.address,
+  //   BigNumber.from(10).pow(18).toString()
+  // );
+  // await mintBConfirmation.wait();
+  // console.log("Token B minted");
+  // console.log("Approving Token B...");
+  // const tokenBApproval = await tokenBContract.approve(
+  //   networks[network.name].wethUsdcPool,
+  //   ethers.constants.MaxUint256
+  // );
+  // await tokenBApproval.wait();
+  // console.log("tokenB approved");
+
+  const poolAddress = networks[network.name].wethUsdcPool;
   const TICK_SPACING = 10;
   const poolContract = new ethers.Contract(poolAddress, poolAbi, signer);
   const slot = await poolContract.getSlot0();
 
   // CHANGE THIS
-  const poolAddress = networks[network.name].wethUsdcPool;
   const amountA = BigNumber.from(10).pow(24);
   const amountB = BigNumber.from(10).pow(12);
   // END CHANGE THIS
 
   const recipient = signer.address;
-  const tickLower = ((slot0.tick - TICK_SPACING) / TICK_SPACING) * TICK_SPACING;
-  const tickUpper = ((slot0.tick + TICK_SPACING) / TICK_SPACING) * TICK_SPACING;
-  const liquidity = poolContract.getLiquidityForAmounts(
-    slot.sqrtRatioX96,
+  const tickLower = ((slot.tick - TICK_SPACING) / TICK_SPACING) * TICK_SPACING;
+  const tickUpper = ((slot.tick + TICK_SPACING) / TICK_SPACING) * TICK_SPACING;
+  console.log("sqrtPriceX96", slot.sqrtPriceX96.toString());
+  console.log("tickLower", tickLower);
+  console.log("tickUpper", tickUpper);
+  console.log("amountA", amountA.toString());
+  console.log("amountB", amountB.toString());
+  const liquidity = await poolContract.getLiquidityForAmounts(
+    slot.sqrtPriceX96.toString(),
     tickLower,
     tickUpper,
-    amountA,
-    amountB
+    amountA.toString(),
+    amountB.toString()
   );
 
+  console.log("liquidity", liquidity.toString());
   const response = await poolContract.mint(
     recipient,
     tickLower,
     tickUpper,
-    liquidity
+    amountA,
+    amountB
   );
 
   const receipt = await response.wait();
