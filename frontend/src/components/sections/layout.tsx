@@ -64,7 +64,6 @@ export default function Layout({ children }: LayoutProps) {
     actionParams,
   } = useEnvironmentContext();
   const [balanceFetched, setBalanceFetched] = useState(false);
-  const [access, setAccess] = useState(true); // TODO: Turn this off
   const [openAi, setOpenAi] = useState(false);
   const [thinking, setThinking] = useState(false);
   const [convos, setConvos] = useState<Convo[]>([]);

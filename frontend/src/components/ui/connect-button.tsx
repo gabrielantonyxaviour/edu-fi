@@ -1,6 +1,6 @@
 import { useAccount, useConnect, useDisconnect, useSwitchChain } from "wagmi";
 import { injected } from "wagmi/connectors";
-import { arbitrumSepolia, bscTestnet } from "viem/chains";
+import { arbitrumSepolia } from "viem/chains";
 import { Button } from "./button";
 import { Icons } from "./icons";
 import {
@@ -31,7 +31,7 @@ export default function ConnectButton() {
         onClick={() => {
           setChainChevron(!chainChevron);
         }}
-        className="border-none text-sm"
+        className="border-none text-sm py-auto bg-secondary mx-2"
       >
         <MenubarMenu>
           <MenubarTrigger
@@ -74,20 +74,20 @@ export default function ConnectButton() {
           <MenubarContent className="w-full">
             {Object.values(supportedchains)
               .sort((a, b) => a.id - b.id)
-              .map((coin) => (
+              .map((chain) => (
                 <MenubarItem
-                  key={coin.id}
+                  key={chain.id}
                   disabled={
-                    (pathname == "/pool" && coin.chainId == 97) ||
+                    (pathname == "/pool" && chain.chainId == 97) ||
                     (pathname == "/stake" &&
-                      (coin.chainId == 56 || coin.chainId == 97)) ||
-                    (pathname == "/positions" && coin.chainId != 56)
+                      (chain.chainId == 56 || chain.chainId == 97)) ||
+                    (pathname == "/positions" && chain.chainId != 56)
                   }
                   className=" cursor-pointer w-full"
                   onClick={async () => {
                     try {
                       await switchChainAsync({
-                        chainId: coin.chainId,
+                        chainId: chain.chainId,
                       });
                       setChainChevron(true);
                     } catch (e) {
@@ -98,13 +98,13 @@ export default function ConnectButton() {
                   <div className="flex space-x-2 items-center w-full justify-between">
                     <div className="flex space-x-2">
                       <Image
-                        src={coin.image}
+                        src={chain.image}
                         width={20}
                         height={20}
                         alt=""
                         className="rounded-full"
                       />
-                      <p>{coin.name}</p>
+                      <p>{chain.name}</p>
                     </div>
                   </div>
                 </MenubarItem>
@@ -114,13 +114,19 @@ export default function ConnectButton() {
       </Menubar>
 
       <Button
-        className="my-auto "
+        className="my-auto flex space-x-2"
         onClick={() => {
           disconnect();
         }}
       >
-        <Icons.binance className="h-6 w-6 fill-current mr-2" />
-        {address?.slice(0, 6) + "..." + address?.slice(-6)}
+        <Image
+          src={`/avatar.jpeg`}
+          width={25}
+          height={25}
+          alt="Avatar"
+          className="rounded-full "
+        />
+        <p>{address?.slice(0, 6) + "..." + address?.slice(-6)}</p>
       </Button>
     </>
   ) : (
@@ -129,7 +135,7 @@ export default function ConnectButton() {
       onClick={() => {
         console.log("connect");
         connect({
-          chainId: bscTestnet.id,
+          chainId: educhainTestnet.id,
           connector: injected(),
         });
       }}

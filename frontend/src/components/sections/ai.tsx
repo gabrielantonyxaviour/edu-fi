@@ -56,7 +56,7 @@ export default function AIComponent({
             </Card>
             {!convo.isAI && (
               <Avatar className="h-9 w-9">
-                <AvatarImage src={"/avatar.jpg"} alt="Avatar" />
+                <AvatarImage src={"/avatar.jpeg"} alt="Avatar" />
                 <AvatarFallback>OM</AvatarFallback>
               </Avatar>
             )}

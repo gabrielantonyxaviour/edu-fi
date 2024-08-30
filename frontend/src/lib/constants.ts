@@ -36,6 +36,12 @@ export const supportedchains: Record<string, any> = {
     symbol: "EDU",
     image: "/coins/edu.png",
     explorer: "https://opencampus-codex.blockscout.com/",
+    tokens: {
+      weth: "",
+      usdc: "",
+      usdt: "",
+      link: "",
+    },
   },
   [arbitrumSepolia.id]: {
     id: 1,
@@ -44,5 +50,11 @@ export const supportedchains: Record<string, any> = {
     symbol: "ETH",
     image: "/coins/arbitrum.png",
     explorer: "https://sepolia.arbiscan.io",
+    tokens: {
+      weth: "",
+      usdc: "",
+      usdt: "",
+      link: "",
+    },
   },
 };

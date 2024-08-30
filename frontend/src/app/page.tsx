@@ -43,14 +43,14 @@ export default function Page() {
         <div className="flex">
           <div className="flex flex-col items-center">
             <Image
-              src={"/avatar.jpg"}
+              src={"/avatar.jpeg"}
               height={50}
               width={60}
               alt="Avatar"
               className="rounded-full"
             />
             <p className="text-3xl mt-4 mb-2 font-bold">Your Portfolio</p>
-            <div className="flex space-x-8 text-center">
+            {/* <div className="flex space-x-8 text-center">
               <div>
                 <p className="text-sm text-muted-foreground ">Mainnet Worth</p>
                 <p className="text-md font-semibold">
@@ -65,11 +65,11 @@ export default function Page() {
                   {roundUpToFiveDecimals(totalBalanceTestnet.toString())}
                 </p>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
-      <div className="w-[80%] mx-auto">
+      {/* <div className="w-[80%] mx-auto">
         <TokenBalanceCard
           balances={{
             eth: roundUpToFiveDecimals(balanceObject[1].native),
@@ -120,7 +120,7 @@ export default function Page() {
             ),
           }}
         />
-      </div>
+      </div> */}
     </div>
   );
 }
