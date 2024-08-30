@@ -1,0 +1,1 @@
+exports.deployCore = require("./deployDefiGenie");
