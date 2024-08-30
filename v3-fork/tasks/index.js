@@ -1,3 +1,3 @@
 exports.deploy = require("./deploy");
 exports.swap = require("./swap");
-exports.deposit = require("./addLiquidity");
+exports.addLiquidity = require("./addLiquidity");
