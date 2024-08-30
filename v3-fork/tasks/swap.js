@@ -5,59 +5,52 @@ task("swap", "Create a pool").setAction(async (taskArgs) => {
   const [signer] = await ethers.getSigners();
 
   // // CHANGE THIS
-  // const poolAddress = "";
-  // const recipient = "";
-  // const zeroForOne = "";
-  // const amountSpecified = "";
-  // const sqrtPriceLimitX96 = "";
+  const poolAddress = networks[network.name].wethUsdcPool;
+  const recipient = signer.address;
+  const zeroForOne = true;
 
-  // const core = new ethers.Contract(
-  //   poolAddress,
-  //   [
-  //     {
-  //       constant: false,
-  //       inputs: [
-  //         {
-  //           name: "recipient",
-  //           type: "address",
-  //         },
-  //         {
-  //           name: "zeroForOne",
-  //           type: "bool",
-  //         },
-  //         {
-  //           name: "amountSpecified",
-  //           type: "int256",
-  //         },
-  //         {
-  //           name: "sqrtPriceLimitX96",
-  //           type: "uint160",
-  //         },
-  //       ],
-  //       name: "swap",
-  //       outputs: [
-  //         {
-  //           name: "amount0",
-  //           type: "int256",
-  //         },
-  //         {
-  //           name: "amount1",
-  //           type: "int256",
-  //         },
-  //       ],
-  //       payable: false,
-  //       stateMutability: "nonpayable",
-  //       type: "function",
-  //     },
-  //   ],
-  //   signer
-  // );
-  // const response = await core.swap(
-  //   recipient,
-  //   zeroForOne,
-  //   amountSpecified,
-  //   sqrtPriceLimitX96
-  // );
-  // const receipt = await response.wait();
-  // console.log(receipt);
+  const core = new ethers.Contract(
+    poolAddress,
+    [
+      {
+        constant: false,
+        inputs: [
+          {
+            name: "recipient",
+            type: "address",
+          },
+          {
+            name: "zeroForOne",
+            type: "bool",
+          },
+          {
+            name: "amount0",
+            type: "uint256",
+          },
+          {
+            name: "amount1",
+            type: "uint256",
+          },
+        ],
+        name: "swap",
+        outputs: [
+          {
+            name: "",
+            type: "uint256",
+          },
+          {
+            name: "",
+            type: "uint256",
+          },
+        ],
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+    ],
+    signer
+  );
+  const response = await core.swap(recipient, zeroForOne, "100000", "100000");
+  const receipt = await response.wait();
+  console.log(receipt);
 });

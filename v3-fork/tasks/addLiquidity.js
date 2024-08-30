@@ -619,39 +619,39 @@ task("add-liquidity", "Add liquidity to pool").setAction(async (taskArgs) => {
   ];
 
   // Approve and Mint Tokens
-  // const tokenA = networks[network.name].weth;
-  // const tokenAContract = new ethers.Contract(tokenA, erc20Abi, signer);
-  // console.log("Minting Token A...");
-  // const mintAConfirmation = await tokenAContract.mint(
-  //   signer.address,
-  //   BigNumber.from(10).pow(36).toString()
-  // );
-  // await mintAConfirmation.wait();
-  // console.log("Token A minted");
-  // console.log("Approving Token A...");
-  // const tokenAApproval = await tokenAContract.approve(
-  //   networks[network.name].wethUsdcPool,
-  //   ethers.constants.MaxUint256
-  // );
-  // await tokenAApproval.wait();
-  // console.log("tokenA approved");
+  const tokenA = networks[network.name].weth;
+  const tokenAContract = new ethers.Contract(tokenA, erc20Abi, signer);
+  console.log("Minting Token A...");
+  const mintAConfirmation = await tokenAContract.mint(
+    signer.address,
+    BigNumber.from(10).pow(36).toString()
+  );
+  await mintAConfirmation.wait();
+  console.log("Token A minted");
+  console.log("Approving Token A...");
+  const tokenAApproval = await tokenAContract.approve(
+    networks[network.name].wethUsdcPool,
+    ethers.constants.MaxUint256
+  );
+  await tokenAApproval.wait();
+  console.log("tokenA approved");
 
-  // console.log("Minting Token B...");
-  // const tokenB = networks[network.name].usdc;
-  // const tokenBContract = new ethers.Contract(tokenB, erc20Abi, signer);
-  // const mintBConfirmation = await tokenBContract.mint(
-  //   signer.address,
-  //   BigNumber.from(10).pow(18).toString()
-  // );
-  // await mintBConfirmation.wait();
-  // console.log("Token B minted");
-  // console.log("Approving Token B...");
-  // const tokenBApproval = await tokenBContract.approve(
-  //   networks[network.name].wethUsdcPool,
-  //   ethers.constants.MaxUint256
-  // );
-  // await tokenBApproval.wait();
-  // console.log("tokenB approved");
+  console.log("Minting Token B...");
+  const tokenB = networks[network.name].usdc;
+  const tokenBContract = new ethers.Contract(tokenB, erc20Abi, signer);
+  const mintBConfirmation = await tokenBContract.mint(
+    signer.address,
+    BigNumber.from(10).pow(18).toString()
+  );
+  await mintBConfirmation.wait();
+  console.log("Token B minted");
+  console.log("Approving Token B...");
+  const tokenBApproval = await tokenBContract.approve(
+    networks[network.name].wethUsdcPool,
+    ethers.constants.MaxUint256
+  );
+  await tokenBApproval.wait();
+  console.log("tokenB approved");
 
   const poolAddress = networks[network.name].wethUsdcPool;
   const TICK_SPACING = 10;
