@@ -16,10 +16,12 @@ const ARBISCAN_API_KEY = process.env.ARBISCAN_API_KEY || "";
 const networks = {
   hardhat: {
     chainId: 31337,
+    confirmations: 1,
   },
   localhost: {
     url: "http://127.0.0.1:8545/",
     chainId: 31337,
+    confirmations: 1,
   },
   arbitrumSepolia: {
     gasPrice: undefined,
