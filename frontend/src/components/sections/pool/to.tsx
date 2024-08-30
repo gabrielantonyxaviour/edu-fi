@@ -13,6 +13,7 @@ import Image from "next/image";
 import { useAccount } from "wagmi";
 import { useState } from "react";
 import Spinner from "@/components/ui/loading";
+import { arbitrumSepolia } from "viem/chains";
 export default function To({
   fromToken,
   toAmount,
@@ -70,21 +71,19 @@ export default function To({
             </MenubarTrigger>
             <MenubarContent>
               <MenubarItem
-                disabled={fromToken == "nativeEth" || fromToken == "nativeBnb"}
+                disabled={fromToken == "eth" || fromToken == "edu"}
                 onClick={() => {
-                  setToToken(
-                    supportedchains[(chainId || 11155111).toString()].symbol ==
-                      "ETH"
-                      ? "nativeEth"
-                      : "nativeBnb"
-                  );
+                  setToToken(chainId == arbitrumSepolia.id ? "eth" : "edu");
+
                   setToChevron(true);
                 }}
               >
                 <div className="flex space-x-2">
                   <Image
                     src={
-                      supportedchains[(chainId || 11155111).toString()].image
+                      supportedcoins[
+                        chainId == arbitrumSepolia.id ? "eth" : "edu"
+                      ].image
                     }
                     width={20}
                     height={20}
@@ -92,53 +91,34 @@ export default function To({
                     className="rounded-full"
                   />
                   <p>
-                    {(isTestnet ? "t" : "") +
-                      supportedchains[(chainId || 11155111).toString()].symbol}
+                    {
+                      supportedcoins[
+                        chainId == arbitrumSepolia.id ? "eth" : "edu"
+                      ].symbol
+                    }
                   </p>
                 </div>
               </MenubarItem>
-              {(chainId == 1 || chainId == 11155111) && (
-                <MenubarItem
-                  disabled={fromToken == "wrappedEth"}
-                  onClick={() => {
-                    setToToken("wrappedEth");
-                    setToChevron(true);
-                  }}
-                >
-                  <div className="flex space-x-2">
-                    <Image
-                      src={supportedcoins["wrappedEth"].image}
-                      width={20}
-                      height={20}
-                      alt=""
-                      className="rounded-full"
-                    />
-                    <p>
-                      {(isTestnet ? "t" : "") +
-                        supportedcoins["wrappedEth"].symbol}
-                    </p>
-                  </div>
-                </MenubarItem>
-              )}
-              {Object.values(supportedcoins)
-                .slice(10)
-                .map((coin) => (
+
+              {Object.entries(supportedcoins)
+                .slice(2, 7)
+                .map(([coinId, coin]) => (
                   <MenubarItem
-                    disabled={coin.symbol.toLocaleLowerCase() == fromToken}
+                    disabled={coinId == fromToken}
                     onClick={() => {
-                      setToToken(coin.symbol.toLowerCase());
+                      setToToken(coinId);
                       setToChevron(true);
                     }}
                   >
                     <div className="flex space-x-2">
                       <Image
-                        src={`/coins/${coin.symbol.toLowerCase()}.png`}
+                        src={coin.image}
                         width={20}
                         height={20}
                         alt=""
                         className="rounded-full"
                       />
-                      <p>{(isTestnet ? "t" : "") + coin.symbol}</p>
+                      <p>{coin.symbol}</p>
                     </div>
                   </MenubarItem>
                 ))}
