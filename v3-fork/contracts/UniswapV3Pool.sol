@@ -29,7 +29,7 @@ function checkTicks(int24 tickLower, int24 tickUpper) pure {
     require(tickUpper <= TickMath.MAX_TICK);
 }
 
-contract UniswapV3Fork {
+contract UniswapV3Pool {
     using SafeCast for uint256;
     using SafeCast for int256;
     using Tick for mapping(int24 => Tick.Info);
