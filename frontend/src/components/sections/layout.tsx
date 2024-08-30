@@ -305,7 +305,7 @@ export default function Layout({ children }: LayoutProps) {
             height={80}
             width={80}
             alt="Logo"
-            className=" rounded-full border-[2px]"
+            className=" rounded-full border-2 border-secondary hover:bg-accent"
           />
         </Button>
         <Sheet
