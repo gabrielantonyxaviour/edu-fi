@@ -624,9 +624,10 @@ task("add-liquidity", "Add liquidity to pool").setAction(async (taskArgs) => {
   console.log("Minting Token A...");
   const mintAConfirmation = await tokenAContract.mint(
     signer.address,
-    BigNumber.from(10).pow(36).toString()
+    BigNumber.from(10).pow(24).toString()
   );
   await mintAConfirmation.wait();
+
   console.log("Token A minted");
   console.log("Approving Token A...");
   const tokenAApproval = await tokenAContract.approve(
@@ -641,7 +642,7 @@ task("add-liquidity", "Add liquidity to pool").setAction(async (taskArgs) => {
   const tokenBContract = new ethers.Contract(tokenB, erc20Abi, signer);
   const mintBConfirmation = await tokenBContract.mint(
     signer.address,
-    BigNumber.from(10).pow(18).toString()
+    BigNumber.from(10).pow(12).toString()
   );
   await mintBConfirmation.wait();
   console.log("Token B minted");
@@ -684,8 +685,8 @@ task("add-liquidity", "Add liquidity to pool").setAction(async (taskArgs) => {
     recipient,
     tickLower,
     tickUpper,
-    amountA,
-    amountB
+    amountB,
+    amountA
   );
 
   const receipt = await response.wait();
