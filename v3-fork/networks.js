@@ -44,6 +44,7 @@ const networks = {
     dai: "0x9050d7A160423d50F5B7C9eD3A0e44866Da7836b",
     weth: "0x5F6906e52918cac7c2f428441b8B92C65faAd534",
     poolFactory: "0x16697a88f99Bf9F06938e25D3343fF2144B8c3c6",
+    wethUsdcPool: "0xFFF41fAf6B17a8c5fd25812cb6A4E98AAdd87EBd",
   },
   educhainTestnet: {
     gasPrice: undefined,
@@ -60,6 +61,7 @@ const networks = {
     dai: "0xAE82F939962BE8119f29E3a657fF6A07745fd735",
     weth: "0x35913884404941d616Ba76a90702572236DaF317",
     poolFactory: "0x8DecD86959b87c64Be4978029a27D19c3e5d49DE",
+    wethUsdcPool: "0xfb13cfc1ae52e967d625434afb7189fd3c106ed4",
   },
 };
 

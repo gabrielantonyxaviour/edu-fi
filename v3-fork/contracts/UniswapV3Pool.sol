@@ -9,8 +9,7 @@ import "./lib/Tick.sol";
 import "./lib/TickBitmap.sol";
 import "./lib/SqrtPriceMath.sol";
 import "./lib/SwapMath.sol";
-import "./lib/FullMath.sol";
-import "./lib/FixedPoint128.sol";
+import "./lib/LiquidityAmounts.sol";
 
 // slot 0 = 32 bytes
 // 2**256 = 32 bytes
@@ -525,5 +524,25 @@ contract UniswapV3Pool {
         returns (Position.Info memory)
     {
         return positions.get(owner, tickLower, tickUpper);
+    }
+
+    function getSqrtRatioAtTick(int24 tick) public pure returns (uint160) {
+        return TickMath.getSqrtRatioAtTick(tick);
+    }
+
+    function getLiquidityForAmounts(
+        uint160 sqrtRatioX96,
+        int24 tickLower,
+        int24 tickUpper,
+        uint256 amount0,
+        uint256 amount1
+    ) external pure returns (uint128) {
+        uint160 sqrtRatioAX96 = TickMath.getSqrtRatioAtTick(tickLower);
+        uint160 sqrtRatioBX96 = TickMath.getSqrtRatioAtTick(tickUpper);
+        return LiquidityAmounts.getLiquidityForAmounts(sqrtRatioX96,
+         sqrtRatioAX96,
+         sqrtRatioBX96,
+         amount0,
+         amount1);
     }
 }
