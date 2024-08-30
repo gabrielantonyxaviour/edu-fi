@@ -10,7 +10,7 @@ contract USDCMock is IERC20 {
 
     string public name = "USDCMock";
     string public symbol = "mUSDC";
-    uint8 public constant decimals = 18;
+    uint8 public constant decimals = 6;
 
     function transfer(address recipient, uint256 amount)
         external

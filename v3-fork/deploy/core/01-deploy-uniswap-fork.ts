@@ -1,9 +1,12 @@
 import { DeployFunction } from "hardhat-deploy/dist/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { blockConfirmation, developmentChains } from "../../helper-hardhat-config";
+import {
+  blockConfirmation,
+  developmentChains,
+} from "../../helper-hardhat-config";
 import { verify } from "../../scripts/utils/verify";
 
-const deployUniswapV3Factory: DeployFunction = async function(
+const deployUniswapV3Fork: DeployFunction = async function (
   hre: HardhatRuntimeEnvironment
 ) {
   const { getNamedAccounts, deployments, network } = hre;
@@ -11,8 +14,8 @@ const deployUniswapV3Factory: DeployFunction = async function(
   const { deployer } = await getNamedAccounts();
 
   log("----------------------------------------------------");
-  log("Deploying UniswapV3Factory and waiting for confirmations...");
-  const uniswapV3Factory = await deploy("UniswapV3Factory", {
+  log("Deploying UniswapV3Fork and waiting for confirmations...");
+  const uniswapV3Factory = await deploy("UniswapV3Fork", {
     from: deployer,
     args: [],
     log: true,
@@ -27,5 +30,5 @@ const deployUniswapV3Factory: DeployFunction = async function(
   }
 };
 
-export default deployUniswapV3Factory;
-deployUniswapV3Factory.tags = ["all", "core", "Factory", "UniswapV3Factory"];
+export default deployUniswapV3Fork;
+deployUniswapV3Fork.tags = ["all", "core", "Factory", "UniswapV3Factory"];
