@@ -33,3 +33,6 @@
 - USDT/WETH Pool
 - LINK/DAI Pool
 - USDC/USDT Pool
+
+### Galadriel Devnet 
+- **Contract** | 0xBf2aEBBf2Ddb9d86b9e4Cb340bDD6b9F559CcF39
