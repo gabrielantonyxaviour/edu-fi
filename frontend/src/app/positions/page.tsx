@@ -88,7 +88,6 @@ export default function Page() {
       setActions(act);
     })();
   }, []);
-  if (status == "disconnected") return <DefaultLanding />;
 
   useEffect(() => {
     if (chainId == 97 || chainId == 1 || chainId == 11155111) {

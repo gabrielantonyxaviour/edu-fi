@@ -1,6 +1,6 @@
 import { useAccount, useConnect, useDisconnect, useSwitchChain } from "wagmi";
 import { injected } from "wagmi/connectors";
-import { bscTestnet } from "viem/chains";
+import { arbitrumSepolia, bscTestnet } from "viem/chains";
 import { Button } from "./button";
 import { Icons } from "./icons";
 import {
@@ -15,6 +15,7 @@ import { supportedchains } from "@/lib/constants";
 import { ArrowLeftCircleIcon, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { educhainTestnet } from "@/lib/config";
 
 export default function ConnectButton() {
   const { address, status, chainId } = useAccount();
@@ -40,16 +41,28 @@ export default function ConnectButton() {
             }}
           >
             <div className="flex space-x-2 items-center w-full justify-between">
-              <div className="flex space-x-2">
-                <Image
-                  src={supportedchains[(chainId || 11155111).toString()].image}
-                  width={20}
-                  height={20}
-                  alt=""
-                  className="rounded-full"
-                />
-                <p>{supportedchains[(chainId || 11155111).toString()].name}</p>
-              </div>
+              {chainId != arbitrumSepolia.id &&
+              chainId != educhainTestnet.id ? (
+                <div className="flex space-x-2">
+                  <p>❌</p>
+                  <p>Wrong Network</p>
+                </div>
+              ) : (
+                <div className="flex space-x-2">
+                  <Image
+                    src={
+                      supportedchains[(chainId || 11155111).toString()].image
+                    }
+                    width={20}
+                    height={20}
+                    alt=""
+                    className="rounded-full"
+                  />
+                  <p>
+                    {supportedchains[(chainId || 11155111).toString()].name}
+                  </p>
+                </div>
+              )}
 
               {!chainChevron ? (
                 <ChevronUp size={20} />
@@ -99,8 +112,8 @@ export default function ConnectButton() {
           </MenubarContent>
         </MenubarMenu>
       </Menubar>
+
       <Button
-        variant="outline"
         className="my-auto "
         onClick={() => {
           disconnect();
@@ -112,7 +125,6 @@ export default function ConnectButton() {
     </>
   ) : (
     <Button
-      variant="outline"
       className="my-auto"
       onClick={() => {
         console.log("connect");

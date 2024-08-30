@@ -26,12 +26,11 @@ export default function Page() {
     setBalanceObjectInUSD,
   } = useEnvironmentContext();
 
-  if (status == "disconnected") return <DefaultLanding />;
   if (totalBalanceMainnet == null || totalBalanceTestnet == null)
     return (
       <div className="flex-1 flex flex-col justify-center items-center">
         <div className="flex space-x-4 items-center">
-          <div className="spinner"></div>
+          <div className="black-spinner"></div>
           <p className="font-semibold text-md">
             {balanceObject != null ? "Finishing up" : "Fetching Balances"}
           </p>

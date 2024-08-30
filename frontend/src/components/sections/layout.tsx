@@ -24,8 +24,9 @@ import { useEnvironmentContext } from "./context";
 import axios from "axios";
 import { supportedchains, supportedcoins } from "@/lib/constants";
 import { getBalance } from "@wagmi/core";
-import { config } from "@/lib/config";
+import { config, educhainTestnet } from "@/lib/config";
 import { usePathname, useRouter } from "next/navigation";
+import { arbitrumSepolia } from "viem/chains";
 interface Convo {
   id: string;
   isAI: boolean;
@@ -43,7 +44,7 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const { status, address } = useAccount();
+  const { status, address, chainId } = useAccount();
   const pathname = usePathname();
   const router = useRouter();
   const [classifyResponse, setClassifyResponse] = useState<ClassifyResponse>({
@@ -240,117 +241,122 @@ export default function Layout({ children }: LayoutProps) {
       router.push("/stake");
     }
   }, [action]);
+
   return (
     <>
-      {access && (
-        <div className="h-screen flex">
-          <div className="px-8 w-full flex flex-col justify-center items-center">
-            <div className="flex w-full justify-between">
-              <div className="flex justify-between py-6 w-full">
-                <div className="flex items-center">
-                  <Image src={"/logo.png"} height={50} width={50} alt="Logo" />
-                  <MainNav
-                    className="mx-6"
-                    setOpenAi={async (path: string) => {
-                      setThinking(true);
-                      setOpenAi(true);
-                      try {
-                        const response = await axios.post("/api/classify", {
-                          message: path,
-                        });
+      <div className="h-screen flex">
+        <div className="px-8 w-full flex flex-col justify-center items-center">
+          <div className="flex w-full justify-between">
+            <div className="flex justify-between py-6 w-full">
+              <div className="flex items-center">
+                <Image src={"/logo.png"} height={50} width={50} alt="Logo" />
+                <MainNav
+                  className="mx-6"
+                  setOpenAi={async (path: string) => {
+                    setThinking(true);
+                    setOpenAi(true);
+                    try {
+                      const response = await axios.post("/api/classify", {
+                        message: path,
+                      });
 
-                        console.log(response.data);
-                        if (response.data.success == false)
-                          throw Error("Error in response");
-                        console.log(typeof response.data.response.response);
-                        setConvos([
-                          ...convos,
-                          {
-                            id: (convos.length + 1).toString(),
-                            isAI: true,
-                            message: response.data.response.response,
-                          },
-                        ]);
-                        console.log({
+                      console.log(response.data);
+                      if (response.data.success == false)
+                        throw Error("Error in response");
+                      console.log(typeof response.data.response.response);
+                      setConvos([
+                        ...convos,
+                        {
                           id: (convos.length + 1).toString(),
                           isAI: true,
                           message: response.data.response.response,
-                        });
-                      } catch (e) {
-                        console.log(e);
-                        setConvos([
-                          ...convos,
-                          {
-                            id: (convos.length + 1).toString(),
-                            isAI: true,
-                            message:
-                              "There is something wrong with the AI. Please refresh the page and try again. If this issue persists, contact @marshal_14627 in Discord.",
-                          },
-                        ]);
-                      }
-                      setThinking(false);
-                    }}
-                  />
-                </div>
-                <div className="flex">
-                  <ConnectButton />
-                </div>
+                        },
+                      ]);
+                      console.log({
+                        id: (convos.length + 1).toString(),
+                        isAI: true,
+                        message: response.data.response.response,
+                      });
+                    } catch (e) {
+                      console.log(e);
+                      setConvos([
+                        ...convos,
+                        {
+                          id: (convos.length + 1).toString(),
+                          isAI: true,
+                          message:
+                            "There is something wrong with the AI. Please refresh the page and try again. If this issue persists, contact @marshal_14627 in Discord.",
+                        },
+                      ]);
+                    }
+                    setThinking(false);
+                  }}
+                />
               </div>
-            </div>
-
-            <div className="flex flex-1 space-x-12 w-full">
-              <div className="flex-1 flex flex-col w-full h-full">
-                {status != "connected" ? <DefaultLanding /> : children}
+              <div className="flex">
+                <ConnectButton />
               </div>
             </div>
           </div>
 
-          <Button
-            disabled={status != "connected"}
-            className="z-10 absolute bottom-10 right-10 border-2 rounded-full border-muted-foreground bg-transparent border-none hover:border-none hover:bg-transparent"
-            onClick={() => {
-              setOpenAi(true);
-            }}
-          >
-            <Image
-              src={"/ai.gif"}
-              height={80}
-              width={80}
-              alt="Logo"
-              className=" rounded-full border-[2px]"
-            />
-          </Button>
-          <Sheet
-            open={openAi}
-            onOpenChange={(open) => {
-              setOpenAi(open);
-            }}
-          >
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle className="relative">
-                  <ArrowRight
-                    className="h-10 w-10 absolute -left-9 bg-background border-[1px]  p-2 text-WHITE cursor-pointer rounded-lg"
-                    onClick={() => {
-                      setOpenAi(false);
-                    }}
-                  />
-                </SheetTitle>
-                <SheetDescription className="h-screen">
-                  <AIComponent
-                    convos={convos}
-                    setConvos={setConvos}
-                    setClassifyResponse={setClassifyResponse}
-                    thinking={thinking}
-                    setAction={setAction}
-                    setActionParams={setActionParams}
-                  />
-                </SheetDescription>
-              </SheetHeader>
-            </SheetContent>
-          </Sheet>
+          <div className="flex flex-1 space-x-12 w-full">
+            <div className="flex-1 flex flex-col w-full h-full">
+              {(chainId != arbitrumSepolia.id &&
+                chainId != educhainTestnet.id) ||
+              status != "connected" ? (
+                <DefaultLanding />
+              ) : (
+                children
+              )}
+            </div>
+          </div>
         </div>
-      )}
+
+        <Button
+          disabled={status != "connected"}
+          className="z-10 absolute bottom-10 right-10 border-2 rounded-full border-muted-foreground bg-transparent border-none hover:border-none hover:bg-transparent"
+          onClick={() => {
+            setOpenAi(true);
+          }}
+        >
+          <Image
+            src={"/ai.gif"}
+            height={80}
+            width={80}
+            alt="Logo"
+            className=" rounded-full border-[2px]"
+          />
+        </Button>
+        <Sheet
+          open={openAi}
+          onOpenChange={(open) => {
+            setOpenAi(open);
+          }}
+        >
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle className="relative">
+                <ArrowRight
+                  className="h-10 w-10 absolute -left-9 bg-background border-[1px]  p-2 text-WHITE cursor-pointer rounded-lg"
+                  onClick={() => {
+                    setOpenAi(false);
+                  }}
+                />
+              </SheetTitle>
+              <SheetDescription className="h-screen">
+                <AIComponent
+                  convos={convos}
+                  setConvos={setConvos}
+                  setClassifyResponse={setClassifyResponse}
+                  thinking={thinking}
+                  setAction={setAction}
+                  setActionParams={setActionParams}
+                />
+              </SheetDescription>
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
+      </div>
     </>
   );
 }
