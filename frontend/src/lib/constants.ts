@@ -20,11 +20,19 @@ export const supportedcoins: Record<string, any> = {
     name: "Ethereum",
     symbol: "ETH",
     image: "/coins/ethereum.png",
+    token: {
+      1: "0x0000000000000000000000000000000000000000",
+      11155111: "0x0000000000000000000000000000000000000000",
+    },
   },
   eth: {
     name: "Ethereum",
     symbol: "ETH",
     image: "/coins/ethereum.png",
+    token: {
+      1: "0x0000000000000000000000000000000000000000",
+      11155111: "0x0000000000000000000000000000000000000000",
+    },
   },
   teth: {
     name: "Ethereum Sepolia Testnet",
@@ -117,7 +125,7 @@ export const supportedchains: Record<string, any> = {
     image: "/coins/bnb.png",
     explorer: "https://bscscan.com/",
     swapRouter: "0xB971eF87ede563556b2ED4b1C0b0019111Dd85d2",
-    swapHelper: "0xFfdFdF0bF73D09B5aF6EF7E8B3a498F6BC3524b5",
+    swapHelper: "",
     poolDisabled: false,
     isTestnet: false,
     stakeDisabled: true,
@@ -143,7 +151,7 @@ export const supportedchains: Record<string, any> = {
     image: "/coins/ethereum.png",
     explorer: "https://etherscan.io/",
     swapRouter: "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
-    swapHelper: "", // TODO: Add deployment
+    swapHelper: "",
     stake: "0xA62F9C5af106FeEE069F38dE51098D9d81B90572",
     poolDisabled: false,
     isTestnet: false,
@@ -156,7 +164,7 @@ export const supportedchains: Record<string, any> = {
     symbol: "ETH",
     image: "/coins/ethereum.png",
     explorer: "https://sepolia.etherscan.io/",
-    swapHelper: " ",
+    swapHelper: "0x615270a5CBA6C1e34D7F8BCB5D26a5BC9285fA20",
     swapRouter: "0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E",
     stake: "0xfbbe4d65bd61b778161ed71ec9416988ee21e911",
     poolDisabled: false,

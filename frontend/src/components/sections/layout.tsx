@@ -239,7 +239,7 @@ export default function Layout({ children }: LayoutProps) {
       // TODO: Make AI explain the page
       router.push("/stake");
     }
-  }, [actionParams]);
+  }, [action]);
   return (
     <>
       {access && (
