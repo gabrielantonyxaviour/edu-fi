@@ -43,6 +43,7 @@ export default function Transaction({
   const { chainId, address } = useAccount();
   const { writeContractAsync } = useWriteContract();
   const [txStarted, setTxStarted] = useState(0);
+
   useEffect(() => {
     if (approveTx != "") {
       toast({
@@ -145,19 +146,27 @@ export default function Transaction({
               }
               onClick={async () => {
                 setTxStarted(1);
+                console.log("Approving");
+                console.log(
+                  supportedchains[chainId || educhainTestnet.id].tokens[
+                    fromToken
+                  ]
+                );
                 try {
                   const tx = await writeContractAsync({
                     abi: erc20Abi,
                     address:
-                      supportedcoins[fromToken].token[
-                        chainId || educhainTestnet.id
+                      supportedchains[chainId || educhainTestnet.id].tokens[
+                        fromToken
                       ],
                     functionName: "approve",
                     args: [
-                      supportedchains[
-                        (chainId || educhainTestnet.id).toString()
-                      ].swapRouter,
-                      BigInt(parseEther(fromAmount)),
+                      supportedchains[chainId || educhainTestnet.id].pools
+                        .usdcweth,
+                      BigInt(parseEther(fromAmount)) /
+                        (fromToken == "usdc"
+                          ? BigInt("1000000000000")
+                          : BigInt("1")),
                     ],
                   });
                   const txReceipt = await waitForTransactionReceipt(config, {

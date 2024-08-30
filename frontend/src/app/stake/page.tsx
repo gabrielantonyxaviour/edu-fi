@@ -104,6 +104,7 @@ export default function StakePage() {
             <Button
               className="w-full mt-3 font-bold text-sm"
               disabled={
+                stakeAmount == "" ||
                 parseFloat(stakeAmount) == 0.0 ||
                 parseFloat(stakeAmount) >= parseFloat(data?.formatted || "0")
               }

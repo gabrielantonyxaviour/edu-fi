@@ -100,7 +100,7 @@ export const supportedchains: Record<string, any> = {
     chainId: arbitrumSepolia.id,
     symbol: "ETH",
     image: "/coins/arbitrum.png",
-    explorer: "https://sepolia.arbiscan.io",
+    explorer: "https://sepolia.arbiscan.io/",
     poolFactory: "0x7334481e7551dE063316f7d3AcE2629761575A51",
     tokens: {
       usdt: "0xc7f60886A8d39446F0689A546CC0eaAF40a32877",
@@ -110,7 +110,7 @@ export const supportedchains: Record<string, any> = {
       weth: "0xDC53A67F182f0495AfCfF3Dc592A7CC02f2Ffe92",
     },
     pools: {
-      usdcWeth: "0xB7CF382335e0Ca1E227c5eBDAd068A9eE330CfD0",
+      usdcweth: "0xB7CF382335e0Ca1E227c5eBDAd068A9eE330CfD0",
     },
   },
 };

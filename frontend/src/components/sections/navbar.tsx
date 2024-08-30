@@ -24,9 +24,6 @@ export function MainNav({
       </Link>
       <Link
         href="/pool"
-        onClick={() => {
-          setOpenAi("pool_page");
-        }}
         className={`text-sm font-medium ${
           pathname != "/pool" && " text-muted-foreground"
         } transition-colors hover:text-primary`}

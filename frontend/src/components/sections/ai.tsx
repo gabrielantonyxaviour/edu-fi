@@ -101,12 +101,12 @@ export default function AIComponent({
             convos.length == 0 || !convos[convos.length - 1].isAI || thinking
           }
           onClick={async () => {
+            const currentConvo = {
+              id: (convos.length + 1).toString(),
+              isAI: false,
+              message: prompt,
+            };
             try {
-              const currentConvo = {
-                id: (convos.length + 1).toString(),
-                isAI: false,
-                message: prompt,
-              };
               setConvos([...convos, currentConvo]);
               const response = await axios.post("/api/classify", {
                 message: prompt,
@@ -127,7 +127,7 @@ export default function AIComponent({
                 ...convos,
                 currentConvo,
                 {
-                  id: (convos.length + 1).toString(),
+                  id: (convos.length + 2).toString(),
                   isAI: true,
                   message: response.data.response.response,
                 },
@@ -138,8 +138,9 @@ export default function AIComponent({
               console.log(e);
               setConvos([
                 ...convos,
+                currentConvo,
                 {
-                  id: (convos.length + 1).toString(),
+                  id: (convos.length + 2).toString(),
                   isAI: true,
                   message:
                     "Sorry, there is a small issue with my brain. Can you please say that again?",

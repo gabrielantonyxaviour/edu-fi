@@ -1,7 +1,7 @@
 "use server";
 import axios from "axios";
 import { NextRequest } from "next/server";
-const url = "https://6a83-103-163-248-230.ngrok-free.app/chat";
+const url = "https://bf4d-103-163-248-230.ngrok-free.app/chat";
 export async function POST(req: NextRequest, res: Response) {
   try {
     const body = await req.json();
