@@ -4,6 +4,7 @@ pragma solidity 0.8.19;
 
 import "./UniswapV3Pool.sol";
 
+import "./interfaces/IERC20.sol";
 
 
 contract UniswapV3PoolFactory {
@@ -29,19 +30,27 @@ contract UniswapV3PoolFactory {
     }
 
     function createPool(
-      address tokenA,
+        address tokenA,
         address tokenB,
-        uint24 fee
+        uint24 fee,
+        uint160 sqrtPriceX96
     ) external returns (address pool) {
-         require(tokenA != tokenB);
+        require(tokenA != tokenB);
         (address token0, address token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
+
         require(token0 != address(0));
         int24 tickSpacing = feeAmountTickSpacing[fee];
+
         require(tickSpacing != 0);
         require(getPool[token0][token1][fee] == address(0));
-        pool = address(new UniswapV3Pool(token0, token1, fee, tickSpacing));
+
+        UniswapV3Pool _pool =new UniswapV3Pool(token0, token1, fee, tickSpacing);
+        _pool.initialize(sqrtPriceX96);
+        
+        pool = address(_pool);
         getPool[token0][token1][fee] = pool;
         getPool[token1][token0][fee] = pool;
+
         emit PoolCreated(token0, token1, fee, tickSpacing, pool);
     }
 
@@ -62,7 +71,6 @@ contract UniswapV3PoolFactory {
         feeAmountTickSpacing[fee] = tickSpacing;
         emit FeeAmountEnabled(fee, tickSpacing);
     }
-
 
 
 }

@@ -1,0 +1,1 @@
+exports.deployFactory = require("./deployFactory");
