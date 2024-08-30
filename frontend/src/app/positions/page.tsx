@@ -21,10 +21,10 @@ import { useAccount, useSwitchChain } from "wagmi";
 export default function Page() {
   const { address, status, chainId } = useAccount();
   const { switchChain } = useSwitchChain();
-  const [positions, setPositions] = useState<Position[] | null>(null);
-  const [actions, setActions] = useState<Action[] | null>(null);
-  const [totalDeposited, setTotalDeposited] = useState<string | null>(null);
-  const [totalClaimed, setTotalClaimed] = useState<string | null>(null);
+  const [positions, setPositions] = useState<Position[] | null>([]);
+  const [actions, setActions] = useState<Action[] | null>([]);
+  const [totalDeposited, setTotalDeposited] = useState<string | null>("0");
+  const [totalClaimed, setTotalClaimed] = useState<string | null>("0");
   // Get Net Spent
   useEffect(() => {
     if (positions == null) return;
@@ -77,39 +77,15 @@ export default function Page() {
     })();
   }, [positions]);
 
-  // Get Positions and Actions
-
-  useEffect(() => {
-    (async function () {
-      const { positions: pos, actions: act } = await getPositionsPage({
-        address: address as `0x${string}`,
-      });
-      setPositions(pos);
-      setActions(act);
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (chainId == 97 || chainId == 1 || chainId == 11155111) {
-      try {
-        switchChain({ chainId: 56 });
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, [chainId]);
-  if (chainId != 56)
-    return (
-      <div className="flex flex-col space-y-4 justify-center items-center my-auto">
-        <p className="text-lg font-semibold">
-          Please switch your chain to view{" "}
-          <span className="text-primary">Positions</span>
-        </p>
-        <div className="flex flex-col items-center">
-          <ConnectButton />
-        </div>
-      </div>
-    );
+  // useEffect(() => {
+  //   (async function () {
+  //     const { positions: pos, actions: act } = await getPositionsPage({
+  //       address: address as `0x${string}`,
+  //     });
+  //     setPositions(pos);
+  //     setActions(act);
+  //   })();
+  // }, []);
 
   if (
     totalDeposited == null ||
@@ -129,18 +105,18 @@ export default function Page() {
         <BoxCard
           title="Positions"
           value={positions.length.toString()}
-          icon={<Notebook className="h-6 w-6 text-yellow-500 " />}
+          icon={<Notebook className="h-6 w-6 text-blue-500 " />}
         />
         <BoxCard
           title="Net Spent"
           value={totalDeposited}
-          icon={<CircleDollarSign className="h-6 w-6 text-yellow-500 " />}
+          icon={<CircleDollarSign className="h-6 w-6 text-blue-500 " />}
         />
 
         <BoxCard
           title="Claimed Fees"
           value={totalClaimed != "0" ? "+" + totalClaimed : totalClaimed}
-          icon={<BaggageClaim className="h-6 w-6 text-yellow-500" />}
+          icon={<BaggageClaim className="h-6 w-6 text-blue-500" />}
         />
       </div>
       <PositionsCard positions={positions} />

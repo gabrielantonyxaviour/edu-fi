@@ -77,12 +77,6 @@ export default function ConnectButton() {
               .map((chain) => (
                 <MenubarItem
                   key={chain.id}
-                  disabled={
-                    (pathname == "/pool" && chain.chainId == 97) ||
-                    (pathname == "/stake" &&
-                      (chain.chainId == 56 || chain.chainId == 97)) ||
-                    (pathname == "/positions" && chain.chainId != 56)
-                  }
                   className=" cursor-pointer w-full"
                   onClick={async () => {
                     try {
