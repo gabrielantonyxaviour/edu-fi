@@ -12,7 +12,7 @@
 
 ### Uniswap V3 Core
 
-- PoolFactory |
+- PoolFactory | https://opencampus-codex.blockscout.com/address/0x8DecD86959b87c64Be4978029a27D19c3e5d49DE#code
 - USDT/WETH Pool
 - LINK/DAI Pool
 - USDC/USDT Pool
@@ -29,7 +29,7 @@
 
 ### Uniswap V3 Core
 
-- PoolFactory |
+- PoolFactory | https://sepolia.arbiscan.io/address/0x16697a88f99Bf9F06938e25D3343fF2144B8c3c6#code
 - USDT/WETH Pool
 - LINK/DAI Pool
 - USDC/USDT Pool
