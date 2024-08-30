@@ -7,11 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "../../ui/button";
-import {
-  supportedchains,
-  supportedcoins,
-  swapRouterAbi,
-} from "@/lib/constants";
+import { supportedchains, supportedcoins, poolAbi } from "@/lib/constants";
 import Image from "next/image";
 import { roundUpToFiveDecimals } from "@/lib/utils";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
@@ -22,7 +18,7 @@ import Link from "next/link";
 import { useAccount, useWriteContract } from "wagmi";
 import { erc20Abi, parseEther, zeroAddress } from "viem";
 import { waitForTransactionReceipt } from "@wagmi/core";
-import { config } from "@/lib/config";
+import { config, educhainTestnet } from "@/lib/config";
 export default function Transaction({
   open,
   setOpen,
@@ -153,11 +149,14 @@ export default function Transaction({
                   const tx = await writeContractAsync({
                     abi: erc20Abi,
                     address:
-                      supportedcoins[fromToken].token[chainId || 11155111],
+                      supportedcoins[fromToken].token[
+                        chainId || educhainTestnet.id
+                      ],
                     functionName: "approve",
                     args: [
-                      supportedchains[(chainId || 11155111).toString()]
-                        .swapRouter,
+                      supportedchains[
+                        (chainId || educhainTestnet.id).toString()
+                      ].swapRouter,
                       BigInt(parseEther(fromAmount)),
                     ],
                   });
@@ -187,26 +186,20 @@ export default function Transaction({
             }
             onClick={async () => {
               setTxStarted(2);
+
               try {
                 const tx = await writeContractAsync({
-                  abi: swapRouterAbi,
+                  abi: poolAbi,
                   address:
-                    supportedchains[(chainId || 11155111).toString()]
-                      .swapHelper,
+                    supportedchains[(chainId || educhainTestnet.id).toString()]
+                      .pools.usdcweth,
                   functionName: "swap",
                   args: [
-                    fromToken == "nativeEth" || fromToken == "nativeBnb"
-                      ? zeroAddress
-                      : supportedcoins[fromToken].token[chainId || 11155111],
-                    toToken == "nativeEth"
-                      ? zeroAddress
-                      : supportedcoins[toToken].token[chainId || 11155111],
+                    address,
+                    false,
                     BigInt(parseEther(fromAmount)),
+                    BigInt(parseEther(toAmount)),
                   ],
-                  value:
-                    fromToken == "nativeEth"
-                      ? BigInt(parseEther(fromAmount))
-                      : BigInt(0),
                 });
                 setActionTx(tx);
 

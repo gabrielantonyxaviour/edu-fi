@@ -1,4 +1,5 @@
 import { arbitrumSepolia } from "viem/chains";
+import { educhainTestnet } from "./config";
 
 export const COINMARKETCAP_IDS: Record<string, number> = {
   link: 1975,
@@ -74,10 +75,10 @@ export const supportedcoins: Record<string, any> = {
 };
 
 export const supportedchains: Record<string, any> = {
-  656476: {
+  [educhainTestnet.id]: {
     id: 1,
     name: "Educhain Testnet",
-    chainId: 656476,
+    chainId: educhainTestnet.id,
     symbol: "EDU",
     image: "/coins/edu.png",
     poolFactory: "0xBbF4E51Cfa0f681a4eBBC5E800b4f53507B00A5B",
@@ -90,7 +91,7 @@ export const supportedchains: Record<string, any> = {
       weth: "0xcfA34a6eAA2Db2E89f77E754B3Aa62BD82042556",
     },
     pools: {
-      usdcWeth: "0x83bbf0853aad133a6fe145c163e0d02e65dee461",
+      usdcweth: "0x83bbf0853aad133a6fe145c163e0d02e65dee461",
     },
   },
   [arbitrumSepolia.id]: {
@@ -113,3 +114,80 @@ export const supportedchains: Record<string, any> = {
     },
   },
 };
+
+export const poolAbi = [
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "recipient",
+        type: "address",
+      },
+      {
+        name: "tickLower",
+        type: "int24",
+      },
+      {
+        name: "tickUpper",
+        type: "int24",
+      },
+      {
+        name: "amount0",
+        type: "uint256",
+      },
+      {
+        name: "amount1",
+        type: "uint256",
+      },
+    ],
+    name: "mint",
+    outputs: [
+      {
+        name: "",
+        type: "uint256",
+      },
+      {
+        name: "",
+        type: "uint256",
+      },
+    ],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "recipient",
+        type: "address",
+      },
+      {
+        name: "zeroForOne",
+        type: "bool",
+      },
+      {
+        name: "amount0",
+        type: "int256",
+      },
+      {
+        name: "amount1",
+        type: "int256",
+      },
+    ],
+    name: "swap",
+    outputs: [
+      {
+        name: "",
+        type: "int256",
+      },
+      {
+        name: "",
+        type: "int256",
+      },
+    ],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];

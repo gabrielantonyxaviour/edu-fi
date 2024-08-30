@@ -226,6 +226,7 @@ export default function PoolPage() {
                     .sort((a, b) => a.id - b.id)
                     .map((coin) => (
                       <MenubarItem
+                        key={coin.name}
                         disabled={coin.poolDisabled}
                         className=" cursor-pointer w-full"
                         onClick={async () => {
