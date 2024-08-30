@@ -1,10 +1,24 @@
 import { arbitrumSepolia } from "viem/chains";
 
+export const COINMARKETCAP_IDS: Record<string, number> = {
+  link: 1975,
+  usdc: 3408,
+  usdt: 825,
+  eth: 1027,
+  edu: 24613,
+  dai: 4943,
+};
+
 export const supportedcoins: Record<string, any> = {
   edu: {
     name: "EduChain",
     symbol: "EDU",
     image: "/coins/edu.png",
+  },
+  eth: {
+    name: "Arbitrum Etherem",
+    symbol: "ETH",
+    image: "/coins/arbitrum.png",
   },
   weth: {
     name: "Wrapped Ethereum",
@@ -25,6 +39,36 @@ export const supportedcoins: Record<string, any> = {
     name: "Test Tether USD",
     symbol: "tUSDT",
     image: "/coins/usdt.png",
+  },
+  dai: {
+    name: "Test Dai",
+    symbol: "tDAI",
+    image: "/coins/dai.png",
+  },
+  eduweth: {
+    name: "Wrapped Ethereum",
+    symbol: "WETH",
+    image: "/coins/weth.png",
+  },
+  edulink: {
+    name: "Test Chain Link ",
+    symbol: "tLINK",
+    image: "/coins/link.png",
+  },
+  eduusdc: {
+    name: "Test USD Stablecoin",
+    symbol: "tUSDC",
+    image: "/coins/usdc.png",
+  },
+  eduusdt: {
+    name: "Test Tether USD",
+    symbol: "tUSDT",
+    image: "/coins/usdt.png",
+  },
+  edudai: {
+    name: "Test Dai",
+    symbol: "tDAI",
+    image: "/coins/dai.png",
   },
 };
 

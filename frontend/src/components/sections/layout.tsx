@@ -56,9 +56,8 @@ export default function Layout({ children }: LayoutProps) {
     balanceObject,
     setBalanceObject,
     setBalanceObjectInUSD,
-    setTotalBalanceMainnet,
-    setTotalBalanceTestnet,
     setActionParams,
+    setTotalBalance,
     action,
     setAction,
     actionParams,
@@ -115,60 +114,48 @@ export default function Layout({ children }: LayoutProps) {
     if (address != null && balanceObject == null) {
       try {
         (async function () {
-          const chains = Object.values(supportedchains);
           const tempBalanceObject: any = {};
-          const tempEthBalance: any = {};
-          const tempBnbBalance: any = {};
+          const tempArbBalance: any = {};
           const tempUsdcBalance: any = {};
           const tempUsdtBalance: any = {};
           const tempLinkBalance: any = {};
-          for (let i = 0; i < chains.length; i++) {
-            const chain = chains[i];
-            tempBalanceObject[chain.chainId] = {};
-            const { formatted: native } = await getBalance(config, {
-              address: address,
-              chainId: chain.chainId,
-            });
-            if (chain.chainId == 56 || chain.chainId == 97) {
-              tempBnbBalance[chain.chainId] = native;
-            } else {
-              tempEthBalance[chain.chainId] = native;
+          const tempDaiBalance: any = {};
+          const { formatted: arbBalance } = await getBalance(config, {
+            address: address,
+            chainId: arbitrumSepolia.id,
+          });
+          tempBalanceObject[arbitrumSepolia.id] = {};
+          tempBalanceObject[arbitrumSepolia.id].native = arbBalance;
+          const { formatted: eduBalance } = await getBalance(config, {
+            address: address,
+            chainId: educhainTestnet.id,
+          });
+          tempBalanceObject[educhainTestnet.id] = {};
+          tempBalanceObject[educhainTestnet.id].native = eduBalance;
+
+          Object.entries(supportedchains[arbitrumSepolia.id].tokens).forEach(
+            async ([key, supp]) => {
+              const { formatted: tokenBalnce } = await getBalance(config, {
+                address: address,
+                chainId: arbitrumSepolia.id,
+                token: supp as `0x${string}`,
+              });
+              tempUsdcBalance[arbitrumSepolia.id] = tokenBalnce;
+              tempBalanceObject[arbitrumSepolia.id][key] = tokenBalnce;
             }
-            tempBalanceObject[chain.chainId].native = native;
+          );
+          Object.entries(supportedchains[educhainTestnet.id].tokens).forEach(
+            async ([key, supp]) => {
+              const { formatted: tokenBalnce } = await getBalance(config, {
+                address: address,
+                chainId: educhainTestnet.id,
+                token: supp as `0x${string}`,
+              });
+              tempUsdcBalance[educhainTestnet.id] = tokenBalnce;
+              tempBalanceObject[educhainTestnet.id][key] = tokenBalnce;
+            }
+          );
 
-            const usdcAddress = supportedcoins.usdc.token[chain.chainId];
-            if (usdcAddress.length > 0) {
-              const { formatted: usdc } = await getBalance(config, {
-                address: address,
-                chainId: chain.chainId,
-                token: usdcAddress,
-              });
-              tempUsdcBalance[chain.chainId] = usdc;
-              tempBalanceObject[chain.chainId].usdc = usdc;
-            } else tempBalanceObject[chain.chainId].usdc = 0;
-            const usdtAddress = supportedcoins.usdt.token[chain.chainId];
-            if (usdtAddress.length > 0) {
-              const { formatted: usdt } = await getBalance(config, {
-                address: address,
-                chainId: chain.chainId,
-                token: usdtAddress,
-              });
-              tempUsdtBalance[chain.chainId] = usdt;
-              tempBalanceObject[chain.chainId].usdt = usdt;
-            } else tempBalanceObject[chain.chainId].usdt = 0;
-
-            const linkAddress = supportedcoins.link.token[chain.chainId];
-            if (linkAddress.length > 0) {
-              const { formatted: link } = await getBalance(config, {
-                address: address,
-                chainId: chain.chainId,
-                token: linkAddress,
-              });
-              tempLinkBalance[chain.chainId] = link;
-              tempBalanceObject[chain.chainId].link = link;
-            } else tempBalanceObject[chain.chainId].link = 0;
-          }
-          console.log("TEMP BALANCE OBJECT");
           console.log(tempBalanceObject);
           setBalanceObject(tempBalanceObject);
           setBalanceFetched(true);
@@ -191,12 +178,11 @@ export default function Layout({ children }: LayoutProps) {
           const ethUsdValue = data.amount.to;
 
           const nextRes = await fetch(
-            `/api/coinmarketcap/convert?from=bnb&to=eth`
+            `/api/coinmarketcap/convert?from=edu&to=eth`
           );
           const nextData = await nextRes.json();
-          const bnbUsdValue = nextData.amount.from;
-          let tempTotalValueMainnet = 0;
-          let tempTotalValueTestnet = 0;
+          const eduUsdValue = nextData.amount.from;
+          let tempTotalValue = 0;
           let tempBalanceObjectInUSD: any = {};
           for (const [chainId, balances] of Object.entries(balanceObject)) {
             console.log(`Network ID: ${chainId}`);
@@ -204,24 +190,20 @@ export default function Layout({ children }: LayoutProps) {
             for (const [token, balance] of Object.entries(balances as any)) {
               tempBalanceObjectInUSD[chainId][token] =
                 (balance as any) *
-                (token == "usdc" || token == "usdt"
+                (token == "usdc" || token == "usdt" || token == "dai"
                   ? 1
                   : token == "link"
                   ? linkUsdValue
-                  : chainId == "56" || chainId == "97"
-                  ? bnbUsdValue
-                  : ethUsdValue);
-              if (chainId == "1" || chainId == "56")
-                tempTotalValueMainnet += tempBalanceObjectInUSD[chainId][token];
-              else
-                tempTotalValueTestnet += tempBalanceObjectInUSD[chainId][token];
+                  : chainId == arbitrumSepolia.id.toString()
+                  ? ethUsdValue
+                  : eduUsdValue);
+              tempTotalValue += tempBalanceObjectInUSD[chainId][token];
             }
           }
           console.log("TEMP BALANCE OBJECT IN USD");
           console.log(tempBalanceObjectInUSD);
           setBalanceObjectInUSD(tempBalanceObjectInUSD);
-          setTotalBalanceMainnet(tempTotalValueMainnet);
-          setTotalBalanceTestnet(tempTotalValueTestnet);
+          setTotalBalance(tempTotalValue);
         })();
       } catch (e) {
         console.log(e);

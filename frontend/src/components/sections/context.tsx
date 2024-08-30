@@ -1,10 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface BalanceContextType {
-  totalBalanceMainnet: number | null;
-  setTotalBalanceMainnet: (totalBalanceMainnet: number) => void;
-  totalBalanceTestnet: number | null;
-  setTotalBalanceTestnet: (totalBalanceTestnet: number) => void;
+  totalBalance: number | null;
+  setTotalBalance: (totalBalance: number) => void;
   balanceObject: any;
   setBalanceObject: (balanceObject: any) => void;
   balanceObjectInUSD: any;
@@ -28,12 +26,7 @@ export const useEnvironmentContext = () => {
 };
 
 export const BalanceProvider = ({ children }: { children: ReactNode }) => {
-  const [totalBalanceMainnet, setTotalBalanceMainnet] = useState<number | null>(
-    null
-  );
-  const [totalBalanceTestnet, setTotalBalanceTestnet] = useState<number | null>(
-    null
-  );
+  const [totalBalance, setTotalBalance] = useState<number | null>(null);
   const [balanceObject, setBalanceObject] = useState<any>(null);
   const [balanceObjectInUSD, setBalanceObjectInUSD] = useState<any>(null);
   const [openAi, setOpenAi] = useState<boolean>(false);
@@ -42,10 +35,8 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
   return (
     <BalanceContext.Provider
       value={{
-        totalBalanceMainnet,
-        setTotalBalanceMainnet,
-        totalBalanceTestnet,
-        setTotalBalanceTestnet,
+        totalBalance,
+        setTotalBalance,
         balanceObject,
         setBalanceObject,
         balanceObjectInUSD,

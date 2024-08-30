@@ -11,6 +11,7 @@ export function TokenBalance({
   usdBalances: Record<string, string>;
 }) {
   useEffect(() => {
+    console.log("TOKEN ABALNCE LOGOGG");
     console.log(balances);
     console.log(usdBalances);
   }, []);

@@ -8,25 +8,18 @@ import Image from "next/image";
 import { PieChartComponent } from "@/components/ui/pie-chart";
 import { useEffect, useState } from "react";
 import { roundUpToFiveDecimals } from "@/lib/utils";
-import { config } from "@/lib/config";
+import { config, educhainTestnet } from "@/lib/config";
 import Spinner from "@/components/ui/loading";
 import { supportedchains, supportedcoins } from "@/lib/constants";
 import { useEnvironmentContext } from "@/components/sections/context";
 import "@/styles/spinner.css";
+import { arbitrumSepolia } from "viem/chains";
 export default function Page() {
   const { status, address } = useAccount();
-  const {
-    totalBalanceMainnet,
-    setTotalBalanceMainnet,
-    totalBalanceTestnet,
-    setTotalBalanceTestnet,
-    balanceObject,
-    setBalanceObject,
-    balanceObjectInUSD,
-    setBalanceObjectInUSD,
-  } = useEnvironmentContext();
+  const { totalBalance, balanceObject, balanceObjectInUSD } =
+    useEnvironmentContext();
 
-  if (totalBalanceMainnet == null || totalBalanceTestnet == null)
+  if (totalBalance == null)
     return (
       <div className="flex-1 flex flex-col justify-center items-center">
         <div className="flex space-x-4 items-center">
@@ -50,77 +43,90 @@ export default function Page() {
               className="rounded-full"
             />
             <p className="text-3xl mt-4 mb-2 font-bold">Your Portfolio</p>
-            {/* <div className="flex space-x-8 text-center">
+            <div className="flex space-x-8 text-center">
               <div>
-                <p className="text-sm text-muted-foreground ">Mainnet Worth</p>
+                <p className="text-sm text-muted-foreground ">Net Worth</p>
                 <p className="text-md font-semibold">
                   <span className="text-muted-foreground mx-1">$</span>
-                  {roundUpToFiveDecimals(totalBalanceMainnet.toString())}
+                  {roundUpToFiveDecimals(totalBalance.toString())}
                 </p>
               </div>
-              <div>
-                <p className="text-sm text-muted-foreground ">Testnet Worth</p>
-                <p className="text-md font-semibold">
-                  <span className="text-muted-foreground mx-1">$</span>
-                  {roundUpToFiveDecimals(totalBalanceTestnet.toString())}
-                </p>
-              </div>
-            </div> */}
+            </div>
           </div>
         </div>
       </div>
-      {/* <div className="w-[80%] mx-auto">
+      <div className="w-[80%] mx-auto">
         <TokenBalanceCard
           balances={{
-            eth: roundUpToFiveDecimals(balanceObject[1].native),
-            bnb: roundUpToFiveDecimals(balanceObject[56].native),
-            usdc: roundUpToFiveDecimals(
-              balanceObject[1].usdc + balanceObject[56].usdc
+            eth: roundUpToFiveDecimals(
+              balanceObject[arbitrumSepolia.id].native
             ),
-            usdt: roundUpToFiveDecimals(
-              balanceObject[1].usdt + balanceObject[56].usdt
+            usdc: roundUpToFiveDecimals(balanceObject[arbitrumSepolia.id].usdc),
+            usdt: roundUpToFiveDecimals(balanceObject[arbitrumSepolia.id].usdt),
+            link: roundUpToFiveDecimals(balanceObject[arbitrumSepolia.id].link),
+            dai: roundUpToFiveDecimals(balanceObject[arbitrumSepolia.id].dai),
+            weth: roundUpToFiveDecimals(balanceObject[arbitrumSepolia.id].weth),
+            edu: roundUpToFiveDecimals(
+              balanceObject[educhainTestnet.id].native
             ),
-            link: roundUpToFiveDecimals(
-              balanceObject[1].link + balanceObject[56].link
+
+            eduusdc: roundUpToFiveDecimals(
+              balanceObject[educhainTestnet.id].usdc
             ),
-            teth: roundUpToFiveDecimals(balanceObject[11155111].native),
-            tbnb: roundUpToFiveDecimals(balanceObject[97].native),
-            tusdc: roundUpToFiveDecimals(
-              balanceObject[11155111].usdc + balanceObject[97].usdc
+            eduusdt: roundUpToFiveDecimals(
+              balanceObject[educhainTestnet.id].usdt
             ),
-            tusdt: roundUpToFiveDecimals(
-              balanceObject[11155111].usdt + balanceObject[97].usdt
+            edulink: roundUpToFiveDecimals(
+              balanceObject[educhainTestnet.id].link
             ),
-            tlink: roundUpToFiveDecimals(
-              balanceObject[11155111].link + balanceObject[97].link
+            edudai: roundUpToFiveDecimals(
+              balanceObject[educhainTestnet.id].dai
+            ),
+            eduweth: roundUpToFiveDecimals(
+              balanceObject[educhainTestnet.id].weth
             ),
           }}
           usdBalances={{
-            eth: roundUpToFiveDecimals(balanceObjectInUSD[1].native),
-            bnb: roundUpToFiveDecimals(balanceObjectInUSD[56].native),
+            eth: roundUpToFiveDecimals(
+              balanceObjectInUSD[arbitrumSepolia.id].native
+            ),
             usdc: roundUpToFiveDecimals(
-              balanceObjectInUSD[1].usdc + balanceObjectInUSD[56].usdc
+              balanceObjectInUSD[arbitrumSepolia.id].usdc
             ),
             usdt: roundUpToFiveDecimals(
-              balanceObjectInUSD[1].usdt + balanceObjectInUSD[56].usdt
+              balanceObjectInUSD[arbitrumSepolia.id].usdt
             ),
             link: roundUpToFiveDecimals(
-              balanceObjectInUSD[1].link + balanceObjectInUSD[56].link
+              balanceObjectInUSD[arbitrumSepolia.id].link
             ),
-            teth: roundUpToFiveDecimals(balanceObjectInUSD[11155111].native),
-            tbnb: roundUpToFiveDecimals(balanceObjectInUSD[97].native),
-            tusdc: roundUpToFiveDecimals(
-              balanceObjectInUSD[11155111].usdc + balanceObjectInUSD[97].usdc
+            dai: roundUpToFiveDecimals(
+              balanceObjectInUSD[arbitrumSepolia.id].dai
             ),
-            tusdt: roundUpToFiveDecimals(
-              balanceObjectInUSD[11155111].usdt + balanceObjectInUSD[97].usdt
+            weth: roundUpToFiveDecimals(
+              balanceObjectInUSD[arbitrumSepolia.id].weth
             ),
-            tlink: roundUpToFiveDecimals(
-              balanceObjectInUSD[11155111].link + balanceObjectInUSD[97].link
+            edu: roundUpToFiveDecimals(
+              balanceObjectInUSD[educhainTestnet.id].native
+            ),
+
+            eduusdc: roundUpToFiveDecimals(
+              balanceObjectInUSD[educhainTestnet.id].usdc
+            ),
+            eduusdt: roundUpToFiveDecimals(
+              balanceObjectInUSD[educhainTestnet.id].usdt
+            ),
+            edulink: roundUpToFiveDecimals(
+              balanceObjectInUSD[educhainTestnet.id].link
+            ),
+            edudai: roundUpToFiveDecimals(
+              balanceObjectInUSD[educhainTestnet.id].dai
+            ),
+            eduweth: roundUpToFiveDecimals(
+              balanceObjectInUSD[educhainTestnet.id].weth
             ),
           }}
         />
-      </div> */}
+      </div>
     </div>
   );
 }
